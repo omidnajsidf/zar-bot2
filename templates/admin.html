@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>🛠 پنل مدیریت زربات</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
+<style>
+:root{--bg:#07070c;--panel:rgba(255,255,255,.045);--line:rgba(255,255,255,.09);--text:#f4f4f7;--muted:#9a9ab0;--gold:#f5c451;--gold-text:#1d1200;--red:#e11d48;--green:#10b981;--blue:#38bdf8}
+*{box-sizing:border-box}
+body{margin:0;font-family:Vazirmatn,Tahoma,sans-serif;color:var(--text);min-height:100vh;
+  background:radial-gradient(1000px 500px at 100% -10%,rgba(225,29,72,.16),transparent 60%),radial-gradient(800px 500px at 0 0,rgba(245,196,81,.1),transparent 55%),var(--bg)}
+button,input,select,textarea{font-family:inherit;font-size:14px;color:inherit}
+button{cursor:pointer;border:0}
+.wrap{max-width:1150px;margin:0 auto;padding:20px 16px 60px}
+header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+h1{margin:0;font-size:24px;font-weight:900;background:linear-gradient(90deg,#fff,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:16px}
+.stat{padding:14px;border-radius:16px;background:var(--panel);border:1px solid var(--line)}
+.stat small{color:var(--muted);font-size:12px;display:block}.stat b{font-size:19px;color:var(--gold)}
+.warn{padding:12px 14px;border-radius:14px;background:rgba(225,29,72,.12);border:1px solid rgba(225,29,72,.4);color:#fecdd3;margin-bottom:14px;font-size:13px;line-height:1.9}
+.tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.tab{padding:10px 18px;border-radius:12px;background:var(--panel);border:1px solid var(--line);font-weight:700;color:var(--muted);position:relative}
+.tab.on{background:linear-gradient(135deg,var(--red),#9f1239);color:#fff;border-color:transparent}
+.badge{position:absolute;top:-6px;left:-6px;background:var(--gold);color:#1d1200;border-radius:99px;font-size:11px;padding:1px 7px;font-weight:900}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:14px}
+.card h3{margin:0 0 12px;font-size:16px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+input,select,textarea{background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:11px;padding:10px 12px;outline:none;min-width:0}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+.btn{padding:10px 16px;border-radius:11px;font-weight:700}
+.gold{background:linear-gradient(135deg,var(--gold),color-mix(in srgb,var(--gold) 78%,#000));color:var(--gold-text)}
+.red{background:color-mix(in srgb,var(--red) 20%,transparent);color:#fb7185;border:1px solid color-mix(in srgb,var(--red) 45%,transparent)}
+.green{background:color-mix(in srgb,var(--green) 20%,transparent);color:#34d399;border:1px solid color-mix(in srgb,var(--green) 45%,transparent)}
+.primary{background:linear-gradient(135deg,var(--red),color-mix(in srgb,var(--red) 68%,#000));color:#fff}
+.login-wrap{min-height:100vh;display:grid;place-items:center;padding:20px}
+.login-card{width:100%;max-width:380px;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:26px 20px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.login-card h2{margin:8px 0 6px;text-align:center;font-size:20px}
+.login-card p{margin:0 0 18px;text-align:center;color:var(--muted);font-size:13px}
+.login-card input{width:100%;margin-bottom:10px}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:8px}
+.titem{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--line);cursor:pointer;font-size:13px;font-weight:700}
+.titem.off{opacity:.55;border-color:rgba(225,29,72,.45);background:rgba(225,29,72,.08)}
+.titem input{width:18px;height:18px;accent-color:var(--green);margin:0;flex:none}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.cbox{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
+.cbox input[type=color]{width:42px;height:38px;padding:2px;border-radius:9px;cursor:pointer;flex:none}
+.cbox input[type=text]{width:92px;padding:6px 8px;direction:ltr;text-align:center;font-family:monospace}
+.preview-box{display:flex;flex-wrap:wrap;gap:10px;padding:16px;border-radius:14px;border:1px solid var(--line);margin-top:12px}
+.ghost{background:rgba(255,255,255,.07);border:1px solid var(--line)}
+.sm{padding:6px 10px;font-size:13px;border-radius:9px}
+.results{display:grid;gap:8px;margin-top:12px}
+.res{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--line);cursor:pointer;text-align:right}
+.res:hover{border-color:var(--gold)}
+.muted{color:var(--muted);font-size:12px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:14px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+td,th{padding:8px 6px;border-bottom:1px solid var(--line);text-align:right;vertical-align:middle}
+th{color:var(--muted);font-weight:500;font-size:12px}
+td input{width:72px;padding:6px 8px;text-align:center}
+.pill{display:inline-block;padding:2px 10px;border-radius:99px;font-size:12px;background:rgba(255,255,255,.08)}
+.pill.ok{background:rgba(16,185,129,.15);color:#34d399}.pill.no{background:rgba(225,29,72,.15);color:#fb7185}.pill.wait{background:rgba(245,196,81,.15);color:var(--gold)}
+.big{font-size:22px;font-weight:900;color:var(--gold)}
+.uhead{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{padding:5px 10px;border-radius:99px;background:rgba(245,196,81,.12);border:1px solid rgba(245,196,81,.35);color:var(--gold);font-size:12.5px}
+.chip button{background:none;color:#fb7185;margin-right:4px}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.form label{font-size:12px;color:var(--muted);display:grid;gap:5px}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(150%);padding:12px 18px;border-radius:12px;background:#1e1e2d;border:1px solid var(--line);transition:.3s;z-index:9;font-weight:700}
+#toast.show{transform:translateX(-50%)}
+#toast.err{border-color:rgba(225,29,72,.6);color:#fecdd3}#toast.ok{border-color:rgba(16,185,129,.6);color:#bbf7d0}
+.hidden{display:none!important}
+code{background:rgba(0,0,0,.4);padding:2px 6px;border-radius:6px;direction:ltr;display:inline-block}
+a{color:var(--gold)}
+</style>
+</head>
+<body>
+<div id="login-wrap" class="login-wrap hidden">
+  <div class="login-card">
+    <div style="text-align:center;font-size:48px">🔐</div>
+    <h2>ورود به پنل مدیریت زربات</h2>
+    <p>نام کاربری و رمز عبور مدیریت را وارد کن</p>
+    <input id="l-user" autocomplete="username" placeholder="نام کاربری (پیش‌فرض: admin)">
+    <input id="l-pass" type="password" autocomplete="current-password" placeholder="رمز عبور">
+    <button class="btn gold" style="width:100%;margin-top:6px" id="l-btn" onclick="doLogin()">ورود به پنل</button>
+    <p id="l-err" style="color:#fb7185;margin-top:10px;min-height:18px"></p>
+  </div>
+</div>
+
+<div class="wrap hidden" id="panel-wrap">
+  <header><h1>🛠 پنل مدیریت زربات</h1>
+    <div class="row"><span id="bot-state" class="pill ok">🤖 ربات: روشن</span>
+      <button class="btn red" id="bot-btn" onclick="toggleBot()">🔴 خاموش کردن بات</button>
+      <button class="btn ghost" onclick="loadStats()">🔄 بروزرسانی</button>
+      <button class="btn ghost" onclick="doLogout()">🚪 خروج</button></div></header>
+  <div id="pwwarn" class="warn hidden">⚠️ رمز پنل هنوز پیش‌فرض (<b>admin</b>) است. در Railway متغیرهای <code>ADMIN_USERNAME</code> و <code>ADMIN_PASSWORD</code> را تنظیم و ربات را ری‌استارت کن.</div>
+  <div class="stats" id="stats"></div>
+  <div class="tabs">
+    <button class="tab on" data-t="users">👤 کاربران</button>
+    <button class="tab" data-t="vip">👑 کاربران VIP</button>
+    <button class="tab" data-t="gifts">🎁 کدهای هدیه</button>
+    <button class="tab" data-t="shop">🛒 فروشگاه</button>
+    <button class="tab" data-t="orders">🧾 سفارش‌ها <span class="badge hidden" id="ord-badge"></span></button>
+    <button class="tab" data-t="ctrl">🎛 کنترل و متن‌ها</button>
+    <button class="tab" data-t="design">🎨 دیزاین</button>
+    <button class="tab" data-t="game">🎮 آیتم‌ها و قیمت‌ها</button>
+    <button class="tab" data-t="admins">🛡 ادمین‌ها</button>
+  </div>
+
+  <!-- کاربران -->
+  <section id="t-users">
+    <div class="card">
+      <h3>🔎 جستجوی کاربر</h3>
+      <div class="row"><input id="q" style="flex:1" placeholder="آیدی عددی، یوزرنیم (@...)، نام یا شماره کارت"><button class="btn gold" onclick="search()">جستجو</button></div>
+      <div class="results" id="results"></div>
+    </div>
+    <div id="user"></div>
+  </section>
+
+  <!-- کد هدیه -->
+  <section id="t-gifts" class="hidden">
+    <div class="card">
+      <h3>➕ ساخت کد هدیه</h3>
+      <div class="form">
+        <label>کد (خالی = تصادفی)<input id="g-code" placeholder="مثلا NOWRUZ"></label>
+        <label>💰 زرکوین<input id="g-coins" inputmode="numeric"></label>
+        <label>🏦 بانک<input id="g-bank" inputmode="numeric"></label>
+        <label>⭐ لول (افزایش)<input id="g-levels" inputmode="numeric"></label>
+        <label>✨ XP<input id="g-xp" inputmode="numeric"></label>
+        <label>👑 اشتراک VIP (روز)<input id="g-vip" inputmode="numeric"></label>
+        <label>👥 حداکثر استفاده (۰ = نامحدود)<input id="g-max" inputmode="numeric"></label>
+        <label>🔒 حداقل لول کاربر<input id="g-minlvl" inputmode="numeric"></label>
+        <label>⌛ انقضا (ساعت، ۰ = همیشگی)<input id="g-exp" inputmode="numeric"></label>
+        <label>📝 یادداشت<input id="g-note"></label>
+      </div>
+      <div id="g-builder"></div>
+      <button class="btn gold" style="margin-top:14px;width:100%" onclick="createGift()">🎁 ساخت کد هدیه</button>
+      <p class="muted">کاربر با نوشتن <code>هدیه زر کد</code> جایزه را می‌گیرد. هر کاربر از هر کد فقط یک بار. ملک/کارگر تا سقف ۵ و پدافندها تا سقف ۱.</p>
+    </div>
+    <div class="card"><h3>📋 کدهای ساخته‌شده</h3><div style="overflow-x:auto"><table><thead><tr><th>کد</th><th>جایزه</th><th>استفاده</th><th>شرط</th><th>وضعیت</th><th></th></tr></thead><tbody id="g-list"></tbody></table></div></div>
+  </section>
+
+  <!-- فروشگاه -->
+  <section id="t-shop" class="hidden">
+    <div class="card">
+      <h3>💳 تنظیمات پرداخت کارت به کارت</h3>
+      <div class="form"><label>شماره کارت<input id="s-card" placeholder="6037-...."></label><label>به نام<input id="s-holder"></label></div>
+      <button class="btn gold" style="margin-top:10px" onclick="saveSettings()">ذخیره</button>
+      <p class="muted">⭐ پرداخت با استارز تلگرام نیازی به تنظیم ندارد. رسیدهای کارت به کارت در تلگرام برای OWNER_ID ارسال می‌شود و از تب «سفارش‌ها» هم قابل بررسی است.</p>
+    </div>
+    <div class="card">
+      <h3 id="p-form-title">➕ افزودن محصول</h3>
+      <input type="hidden" id="p-id">
+      <div class="form">
+        <label>عنوان محصول<input id="p-title" placeholder="مثلا ۱۰ میلیون زرکوین"></label>
+        <label>💳 قیمت (تومان)<input id="p-toman" inputmode="numeric" placeholder="0 = غیرفعال"></label>
+        <label>⭐ قیمت (استارز)<input id="p-stars" inputmode="numeric" placeholder="0 = غیرفعال"></label>
+        <label>ترتیب نمایش<input id="p-sort" inputmode="numeric" placeholder="0"></label>
+        <label>💰 زرکوین<input id="p-coins" inputmode="numeric"></label>
+        <label>🏦 بانک<input id="p-bank" inputmode="numeric"></label>
+        <label>⭐ لول (افزایش)<input id="p-levels" inputmode="numeric"></label>
+        <label>✨ XP<input id="p-xp" inputmode="numeric"></label>
+        <label>👑 اشتراک VIP (روز)<input id="p-vip" inputmode="numeric" placeholder="مثلا 30 / 90 / 180"></label>
+      </div>
+      <label class="muted" style="display:grid;gap:5px;margin-top:10px">توضیحات<textarea id="p-desc" rows="2"></textarea></label>
+      <div id="p-builder"></div>
+      <div class="row" style="margin-top:14px"><button class="btn gold" style="flex:1" onclick="saveProduct()">💾 ذخیره محصول</button><button class="btn ghost hidden" id="p-cancel" onclick="resetProduct()">انصراف از ویرایش</button></div>
+    </div>
+    <div class="card"><h3>📦 محصولات</h3><div style="overflow-x:auto"><table><thead><tr><th>محصول</th><th>شامل</th><th>قیمت</th><th>فروش</th><th>وضعیت</th><th></th></tr></thead><tbody id="p-list"></tbody></table></div></div>
+  </section>
+
+  <!-- سفارش‌ها -->
+  <section id="t-orders" class="hidden">
+    <div class="card">
+      <div class="row" style="justify-content:space-between;margin-bottom:10px"><h3 style="margin:0">🧾 سفارش‌ها</h3>
+        <select id="o-filter" onchange="loadOrders()"><option value="">همه</option><option value="review">🕵️ در انتظار بررسی</option><option value="awaiting_receipt">📸 منتظر رسید</option><option value="paid">✅ پرداخت‌شده</option><option value="rejected">❌ رد شده</option><option value="pending">⭐ فاکتور صادرشده</option><option value="cancelled">لغو شده</option></select></div>
+      <div style="overflow-x:auto"><table><thead><tr><th>#</th><th>کاربر</th><th>محصول</th><th>مبلغ</th><th>وضعیت</th><th>زمان</th><th></th></tr></thead><tbody id="o-list"></tbody></table></div>
+    </div>
+  </section>
+
+  <!-- کاربران VIP -->
+  <section id="t-vip" class="hidden">
+    <div class="card">
+      <h3>👑 فعال‌سازی / تمدید اشتراک VIP</h3>
+      <div class="form">
+        <label>آیدی عددی کاربر<input id="v-id" inputmode="numeric" placeholder="مثلاً 123456789"></label>
+        <label>مدت (روز)<input id="v-days" inputmode="numeric" value="30"></label>
+        <label>یادداشت (اختیاری)<input id="v-note" placeholder="مثلاً خرید دستی"></label>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <button class="btn ghost sm" onclick="$('#v-days').value=30">۱ ماهه (۳۰ روز)</button>
+        <button class="btn ghost sm" onclick="$('#v-days').value=90">۳ ماهه (۹۰ روز)</button>
+        <button class="btn ghost sm" onclick="$('#v-days').value=180">۶ ماهه (۱۸۰ روز)</button>
+        <button class="btn gold" style="margin-right:auto" onclick="saveVip()">👑 فعال‌سازی VIP</button>
+      </div>
+      <p class="muted" style="line-height:2">مزایای خودکار VIP: ۶ عدد از هر وسیله شلیک (به‌جای ۳)، +۵ ظرفیت مهمات در هر لول انبار، +۱۰٪ سود بیشتر ملک و کارگر، و سود روزانه ۵٪ بانک (به‌جای ۲٪). همچنین ۳ پلن یک‌ماهه (۸۰ ت)، سه‌ماهه (۲۲۰ ت) و شش‌ماهه (۴۵۰ ت) خودکار در تب «فروشگاه» اضافه شده‌اند.</p>
+    </div>
+    <div class="card"><h3>📋 فهرست کاربران VIP</h3><div style="overflow-x:auto"><table><thead><tr><th>کاربر</th><th>آیدی</th><th>باقی‌مانده</th><th>انقضا</th><th>وضعیت</th><th>یادداشت</th><th></th></tr></thead><tbody id="v-list"></tbody></table></div></div>
+  </section>
+
+  <!-- کنترل بازی‌ها، بخش‌ها و متن‌ها -->
+  <section id="t-ctrl" class="hidden">
+    <div class="card">
+      <h3>🎮 روشن / خاموش کردن بازی‌های مینی‌اپ</h3>
+      <p class="muted">تیک هر بازی را برداری، آن بازی برای کاربران خاموش و پنهان می‌شود.</p>
+      <div class="tgrid" id="ctrl-games"></div>
+    </div>
+    <div class="card">
+      <h3>🧩 روشن / خاموش کردن بخش‌های ربات</h3>
+      <p class="muted">تیک هر بخش را برداری، کاربران عادی به آن بخش دسترسی ندارند و پیام «بخش غیرفعال» می‌گیرند (ادمین‌ها همچنان دسترسی دارند).</p>
+      <div class="tgrid" id="ctrl-sections"></div>
+    </div>
+    <div class="card">
+      <h3>✏️ تغییر متن‌ها و دکمه‌های منو</h3>
+      <div class="form">
+        <label>پیام بخش/بازی غیرفعال<input id="tx-section_off" placeholder="⛔ این بخش موقتاً توسط مدیریت غیرفعال شده است."></label>
+        <label>پیام وقتی کل بات خاموش است (خالی = سکوت)<input id="tx-bot_off_msg" placeholder="🤖 ربات در حال بروزرسانی است..."></label>
+        <label>تیتر صفحه اصلی مینی‌اپ<input id="tx-miniapp_hero_title" placeholder="به قمارخانه زر خوش اومدی"></label>
+        <label>زیرتیتر صفحه اصلی مینی‌اپ<input id="tx-miniapp_hero_sub" placeholder="بازی‌های سریع تک‌نفره یا رقابت زنده..."></label>
+        <label>متن پیام «کازینو زربات»<input id="tx-casino_text" placeholder="خالی = متن پیش‌فرض"></label>
+        <label>متن بالای فروشگاه<input id="tx-shop_text" placeholder="خالی = متن پیش‌فرض"></label>
+        <label>اطلاعیه/متن اضافی راهنما<input id="tx-help_extra" placeholder="اختیاری — در صفحه اول راهنما نمایش داده می‌شود"></label>
+      </div>
+      <h3 style="margin-top:16px">🏷 نام دکمه‌های منوی اصلی (خالی = پیش‌فرض)</h3>
+      <div class="form">
+        <label>دکمه بانک<input id="tx-btn_bank" placeholder="🏦 بانک"></label>
+        <label>دکمه ملک‌ها<input id="tx-btn_prop" placeholder="🏠 ملک‌ها"></label>
+        <label>دکمه کارگرها<input id="tx-btn_worker" placeholder="👷 کارگرها"></label>
+        <label>دکمه کازینو<input id="tx-btn_casino" placeholder="🎰 کازینو"></label>
+        <label>دکمه ماموریت‌ها<input id="tx-btn_mission" placeholder="🎯 ماموریت‌ها"></label>
+        <label>دکمه انتقال<input id="tx-btn_transfer" placeholder="💸 انتقال"></label>
+        <label>دکمه کاباره<input id="tx-btn_kabareh" placeholder="🎭 کاباره زر"></label>
+        <label>دکمه لیدربورد<input id="tx-btn_lb" placeholder="🏆 لیدربورد"></label>
+        <label>دکمه بازار سیاه<input id="tx-btn_bm" placeholder="💀 بازار سیاه"></label>
+        <label>دکمه فروشگاه<input id="tx-btn_shop" placeholder="💎 خرید کوین و لول"></label>
+        <label>دکمه راهنما<input id="tx-btn_help" placeholder="📚 راهنما"></label>
+      </div>
+      <button class="btn gold" style="margin-top:14px;width:100%" onclick="saveControls()">💾 ذخیره تنظیمات و متن‌ها</button>
+    </div>
+  </section>
+
+  <!-- دیزاین و رنگ دکمه‌ها -->
+  <section id="t-design" class="hidden">
+    <div class="card">
+      <h3>🎨 تم‌های آماده</h3>
+      <div class="row">
+        <button class="btn ghost sm" onclick="applyPreset('classic')">❤️ کلاسیک قرمز و طلایی</button>
+        <button class="btn ghost sm" onclick="applyPreset('purple')">💜 بنفش نئون</button>
+        <button class="btn ghost sm" onclick="applyPreset('emerald')">💚 زمردی سلطنتی</button>
+        <button class="btn ghost sm" onclick="applyPreset('ocean')">💙 آبی اقیانوسی</button>
+        <button class="btn ghost sm" onclick="applyPreset('sunset')">🔥 نارنجی آتشین</button>
+      </div>
+      <h3 style="margin-top:16px">🖌 انتخاب رنگ دکمه‌ها و پس‌زمینه</h3>
+      <div class="cgrid" id="design-grid"></div>
+      <div class="preview-box" id="design-preview">
+        <button class="btn primary" type="button">دکمه اصلی / تب فعال</button>
+        <button class="btn gold" type="button">دکمه طلایی / شروع بازی</button>
+        <button class="btn green" type="button">دکمه سبز / برداشت</button>
+        <button class="btn ghost" type="button">دکمه شیشه‌ای</button>
+      </div>
+      <div class="row" style="margin-top:14px">
+        <button class="btn gold" style="flex:1" onclick="saveDesign(false)">💾 ذخیره و اعمال دیزاین</button>
+        <button class="btn ghost" onclick="saveDesign(true)">↩️ بازگشت به پیش‌فرض</button>
+      </div>
+      <p class="muted" style="margin-top:10px">تغییرات بلافاصله روی همه‌ی دکمه‌های مینی‌اپ و پنل مدیریت اعمال می‌شود.</p>
+    </div>
+
+    <div class="card">
+      <h3>🔘 رنگ دکمه‌های منوی اصلی بات</h3>
+      <p class="muted" style="line-height:2">تلگرام رنگ واقعی برای دکمه‌های منوی اصلی ندارد؛ رنگ با یک ایموجی دایره رنگی قبل از متن دکمه نمایش داده می‌شود. برای هر دکمه یک رنگ انتخاب کن و «ذخیره و اعمال دیزاین» را بزن.</p>
+      <div class="cgrid" id="menu-colors-grid"></div>
+    </div>
+  </section>
+
+  <!-- آیتم‌ها و قیمت‌های بازی -->
+  <section id="t-game" class="hidden">
+    <div class="card">
+      <h3>💰 تنظیمات عمومی قیمت‌ها</h3>
+      <div class="form">
+        <label>حداقل شرط کازینو<input id="gs-minbet" inputmode="numeric"></label>
+        <label>حداکثر شرط کازینو<input id="gs-maxbet" inputmode="numeric"></label>
+        <label>سود روزانه بانک (مثلاً 0.02 = ۲٪)<input id="gs-bankrate"></label>
+        <label>مبلغ پایه ارتقای انبار<input id="gs-whbase" inputmode="numeric"></label>
+      </div>
+      <button class="btn gold" style="margin-top:10px" onclick="saveGameSettings()">💾 ذخیره تنظیمات</button>
+      <p class="muted" style="margin-top:8px">تغییرات بلافاصله اعمال می‌شود و بعد از ری‌استارت هم حفظ می‌شود.</p>
+    </div>
+
+    <div class="card">
+      <h3>📦 مدیریت آیتم‌های بازی</h3>
+      <div class="tabs" style="margin-bottom:12px">
+        <button class="tab on" data-gc="property">🏠 ملک‌ها</button>
+        <button class="tab" data-gc="worker">👷 کارگرها</button>
+        <button class="tab" data-gc="item">💀 بازار سیاه</button>
+      </div>
+      <div style="overflow-x:auto"><table><thead><tr><th>آیتم</th><th>قیمت</th><th>درآمد / تخریب / دفاع</th><th>وضعیت</th><th></th></tr></thead><tbody id="gi-list"></tbody></table></div>
+    </div>
+
+    <div class="card">
+      <h3 id="gi-form-title">➕ افزودن آیتم جدید</h3>
+      <input type="hidden" id="gi-key">
+      <div class="form">
+        <label>کلید آیتم (انگلیسی — فقط برای آیتم جدید)<input id="gi-key-in" placeholder="مثلاً my_item"></label>
+        <label>نام<input id="gi-name" placeholder="نام نمایشی"></label>
+        <label>ایموجی<input id="gi-emoji" placeholder="🏠"></label>
+        <label>قیمت<input id="gi-price" inputmode="numeric"></label>
+        <label id="gi-income-wrap">درآمد روزانه<input id="gi-income" inputmode="numeric"></label>
+        <label id="gi-type-wrap">نوع آیتم
+          <select id="gi-type" onchange="syncGameItemForm()">
+            <option value="launcher">🚀 وسیله شلیک</option>
+            <option value="projectile">💥 مهمات</option>
+            <option value="defense">🛡️ دفاعی</option>
+          </select>
+        </label>
+        <label id="gi-damage-wrap">درصد تخریب (۰ تا ۱ — مثلاً 0.2)<input id="gi-damage" placeholder="0.2"></label>
+        <label id="gi-defchance-wrap">احتمال دفاع (۰ تا ۱)<input id="gi-defchance" placeholder="0.35"></label>
+        <label id="gi-launches-wrap">کلیدهای مهمات قابل شلیک (با کاما)<input id="gi-launches" placeholder="cruise_missile, ballistic_missile"></label>
+        <label id="gi-deftype-wrap">نوع دفاع قابل مقابله<input id="gi-deftype" placeholder="missile_defense"></label>
+        <label id="gi-defagainst-wrap">دفاع در برابر<input id="gi-defagainst" placeholder="missile_defense"></label>
+        <label id="gi-command-wrap">دستور شلیک<input id="gi-command" placeholder="شلیک موشک کروز"></label>
+      </div>
+      <p class="muted" id="gi-cmd-note" style="margin-top:8px">⚠️ دستور شلیک باید در <code>bot.py</code> هم ثبت شود تا شلیک با آن دستور کار کند.</p>
+      <div class="row" style="margin-top:12px">
+        <button class="btn gold" style="flex:1" onclick="saveGameItem()">💾 ذخیره آیتم</button>
+        <button class="btn ghost hidden" id="gi-cancel" onclick="resetGameItemForm()">انصراف از ویرایش</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ادمین‌ها -->
+  <section id="t-admins" class="hidden">
+    <div class="card">
+      <h3>➕ افزودن ادمین</h3>
+      <div class="row">
+        <input id="ad-id" inputmode="numeric" style="flex:1" placeholder="آیدی عددی کاربر (مثلاً 123456789)">
+        <input id="ad-note" style="flex:1" placeholder="یادداشت (اختیاری)">
+        <button class="btn gold" onclick="addAdmin()">🛡 ادمین کن</button>
+      </div>
+      <p class="muted" style="line-height:2">کاربر باید قبلاً ربات را استارت کرده باشد. ادمین: رسیدهای کارت به کارت را می‌گیرد و تأیید یا رد می‌کند، اعلان خریدها را می‌گیرد، در حالت خاموشی ربات برایش کار می‌کند و تا وقتی ادمین است بن نمی‌شود. ورود به این پنل همچنان فقط با نام کاربری و رمز است.</p>
+    </div>
+    <div class="card"><h3>📋 ادمین‌های ربات</h3><div style="overflow-x:auto"><table><thead><tr><th>کاربر</th><th>آیدی</th><th>نوع</th><th>یادداشت</th><th>تاریخ افزودن</th><th></th></tr></thead><tbody id="ad-list"></tbody></table></div></div>
+  </section>
+</div>
+<div id="toast"></div>
+<script>
+'use strict';
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt = n => Number(n || 0).toLocaleString('fa-IR');
+const num = v => { const s = String(v == null ? '' : v).replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[^\d]/g, ''); return s ? parseInt(s, 10) : 0; };
+const dt = t => new Date(t * 1000).toLocaleString('fa-IR');
+let CAT = null, CUR = null;
+const RB = { g: { properties: {}, workers: {}, items: {} }, p: { properties: {}, workers: {}, items: {} } };
+function toast(m, k) { const t = $('#toast'); t.textContent = m; t.className = 'show ' + (k || ''); clearTimeout(t._t); t._t = setTimeout(() => t.className = '', 2800); }
+function showLogin(show) {
+  $('#login-wrap').classList.toggle('hidden', !show);
+  $('#panel-wrap').classList.toggle('hidden', show);
+  if (show) setTimeout(() => { try { $('#l-user').focus(); } catch (e) {} }, 50);
+}
+async function doLogin() {
+  $('#l-err').textContent = '';
+  try {
+    const r = await fetch('/admin/api/login', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: $('#l-user').value, password: $('#l-pass').value }) });
+    const d = await r.json().catch(() => null);
+    if (!r.ok || !d || !d.ok) { $('#l-err').textContent = (d && d.error) || 'نام کاربری یا رمز اشتباه است'; return; }
+    $('#l-pass').value = '';
+    showLogin(false);
+    loadStats();
+  } catch (e) { $('#l-err').textContent = 'خطا در اتصال به سرور'; }
+}
+async function doLogout() {
+  try { await fetch('/admin/api/logout', { method: 'POST', credentials: 'same-origin' }); } catch (e) {}
+  showLogin(true);
+}
+$('#l-pass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+$('#l-user').addEventListener('keydown', e => { if (e.key === 'Enter') $('#l-pass').focus(); });
+
+function applyAdminDesign(ds) {
+  if (!ds) return;
+  const r = document.documentElement.style;
+  if (ds.btn_primary) r.setProperty('--red', ds.btn_primary);
+  if (ds.btn_gold) r.setProperty('--gold', ds.btn_gold);
+  if (ds.btn_green) r.setProperty('--green', ds.btn_green);
+  if (ds.btn_blue) r.setProperty('--blue', ds.btn_blue);
+  if (ds.btn_gold_text) r.setProperty('--gold-text', ds.btn_gold_text);
+  if (ds.bg_color) r.setProperty('--bg', ds.bg_color);
+}
+
+async function api(path, body) {
+  const r = await fetch('/admin/api/' + path, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}) });
+  if (r.status === 401) { showLogin(true); throw new Error('auth'); }
+  let d = null; try { d = await r.json(); } catch (e) {}
+  if (!d) throw new Error('پاسخ نامعتبر');
+  if (!d.ok) throw new Error(d.error || 'خطا');
+  return d;
+}
+document.querySelectorAll('.tab').forEach(b => b.onclick = () => {
+  document.querySelectorAll('.tab').forEach(x => x.classList.toggle('on', x === b));
+  ['users', 'vip', 'gifts', 'shop', 'orders', 'ctrl', 'design', 'game', 'admins'].forEach(t => $('#t-' + t).classList.toggle('hidden', b.dataset.t !== t));
+  ({ vip: loadVips, gifts: loadGifts, shop: loadProducts, orders: loadOrders, ctrl: loadControls, design: loadDesign, game: loadGameItems, admins: loadAdmins }[b.dataset.t] || (() => {}))();
+});
+
+/* ── سازنده جایزه (مشترک کد هدیه و محصول) ── */
+function builderHtml(px) {
+  return `<div class="row" style="margin-top:12px">
+    <select id="${px}-type" onchange="fillKeys('${px}')"><option value="properties">🏠 ملک</option><option value="workers">👷 کارگر</option><option value="items">💀 بازار سیاه</option></select>
+    <select id="${px}-key" style="flex:1"></select><input id="${px}-n" inputmode="numeric" value="1" style="width:80px;text-align:center">
+    <button class="btn ghost" onclick="addReward('${px}')">افزودن</button></div><div class="chips" id="${px}-chips"></div>`;
+}
+function fillKeys(px) { if (!CAT) return; $('#' + px + '-key').innerHTML = (CAT[$('#' + px + '-type').value] || []).map(i => `<option value="${i.key}">${i.emoji} ${esc(i.name)}</option>`).join(''); }
+function addReward(px) { const t = $('#' + px + '-type').value, k = $('#' + px + '-key').value, n = num($('#' + px + '-n').value); if (!k || !n) return; RB[px][t][k] = n; renderChips(px); }
+function delReward(px, t, k) { delete RB[px][t][k]; renderChips(px); }
+function renderChips(px) {
+  const out = [];
+  for (const t of ['properties', 'workers', 'items']) for (const [k, n] of Object.entries(RB[px][t])) {
+    const it = ((CAT && CAT[t]) || []).find(i => i.key === k) || { emoji: '', name: k };
+    out.push(`<span class="chip">${it.emoji} ${esc(it.name)} × ${fmt(n)}<button onclick="delReward('${px}','${t}','${k}')">✕</button></span>`);
+  }
+  $('#' + px + '-chips').innerHTML = out.join('');
+}
+function collectRewards(px) {
+  return { coins: num($('#' + px + '-coins').value), bank: num($('#' + px + '-bank').value), levels: num($('#' + px + '-levels').value), xp: num($('#' + px + '-xp').value),
+    vip_days: num($('#' + px + '-vip') ? $('#' + px + '-vip').value : 0),
+    properties: RB[px].properties, workers: RB[px].workers, items: RB[px].items };
+}
+$('#g-builder').innerHTML = builderHtml('g');
+$('#p-builder').innerHTML = builderHtml('p');
+
+/* ── آمار ── */
+async function loadStats() {
+  try {
+    const d = await api('stats'); CAT = d.catalog;
+    showLogin(false);
+    applyAdminDesign(d.design);
+    $('#pwwarn').classList.toggle('hidden', !d.default_password);
+    const bs = $('#bot-state'), bb = $('#bot-btn');
+    if (d.bot_off) { bs.textContent = '🤖 ربات: خاموش'; bs.className = 'pill no'; bb.textContent = '🟢 روشن کردن بات'; bb.className = 'btn green'; }
+    else { bs.textContent = '🤖 ربات: روشن'; bs.className = 'pill ok'; bb.textContent = '🔴 خاموش کردن بات'; bb.className = 'btn red'; }
+    $('#stats').innerHTML = [['👥 کاربران', fmt(d.users)], ['👑 VIP فعال', fmt(d.vip_count || 0)], ['💰 مجموع موجودی', fmt(d.balance)], ['🏦 مجموع بانک', fmt(d.bank)],
+      ['🎮 بازی‌های فعال', fmt(d.games)], ['⏳ در صف', fmt(d.queue)], ['🎁 کدهای فعال', fmt(d.gifts)], ['🔑 Redis', d.redis ? '✅' : '❌']]
+      .map(([a, b]) => `<div class="stat"><small>${a}</small><b>${b}</b></div>`).join('');
+    fillKeys('g'); fillKeys('p');
+    api('shop/orders', { status: 'review' }).then(o => { const b = $('#ord-badge'); b.textContent = fmt(o.review_count); b.classList.toggle('hidden', !o.review_count); }).catch(() => {});
+  } catch (e) { if (e.message !== 'auth') toast(e.message, 'err'); }
+}
+
+/* ── کاربران ── */
+async function toggleBot() {
+  const off = $('#bot-state').className.includes('ok');
+  if (off && !confirm('⚠️ بات خاموش شود؟\nتا وقتی دوباره روشنش نکنی، ربات به هیچ کاربری (به جز ادمین‌ها) جواب نمی‌دهد.')) return;
+  try { const d = await api('bot/toggle', { off }); toast(d.off ? '🔴 بات خاموش شد' : '🟢 بات روشن شد', 'ok'); loadStats(); }
+  catch (e) { toast(e.message, 'err'); }
+}
+async function search() {
+  const q = $('#q').value.trim(); if (!q) return;
+  try {
+    const d = await api('search', { q });
+    $('#results').innerHTML = d.results.length ? d.results.map(u => `<button class="res" onclick="openUser(${u.user_id})">
+      <span><b>${esc(u.first_name || '—')}</b> ${u.username ? '<span class="muted">@' + esc(u.username) + '</span>' : ''}${u.banned ? ' <span class="pill no">🚫 بن</span>' : ''}<br><span class="muted">${u.user_id} · لول ${fmt(u.level)}</span></span>
+      <span class="big" style="font-size:15px">${fmt(u.balance)}</span></button>`).join('') : '<p class="muted">کاربری پیدا نشد</p>';
+    if (d.results.length === 1) openUser(d.results[0].user_id);
+  } catch (e) { toast(e.message, 'err'); }
+}
+$('#q').addEventListener('keydown', e => { if (e.key === 'Enter') search(); });
+async function openUser(id) { try { const d = await api('user', { user_id: id }); CUR = d.user; renderUser(); } catch (e) { toast(e.message, 'err'); } }
+function adjRow(label, kind, value, key) {
+  return `<tr><td>${label}</td><td><b>${value}</b></td><td><input id="a-${kind}-${key || ''}" inputmode="numeric" value="${['coins', 'bank', 'xp'].includes(kind) ? '' : 1}" placeholder="مقدار"></td>
+    <td style="white-space:nowrap"><button class="btn green sm" onclick="adj('${kind}','${key || ''}',1)">➕</button> <button class="btn red sm" onclick="adj('${kind}','${key || ''}',-1)">➖</button></td></tr>`;
+}
+function renderUser() {
+  const u = CUR; if (!u || !CAT) return;
+  const tbl = (title, list, owned, kind, cap) => `<div class="card"><h3>${title}</h3><table><thead><tr><th>مورد</th><th>تعداد</th><th>مقدار</th><th></th></tr></thead><tbody>
+    ${list.map(it => adjRow(`${it.emoji} ${esc(it.name)}${it.type === 'defense' ? ' <span class="pill">حداکثر ۱</span>' : ''}`, kind, (owned[it.key] || 0) + (cap ? ' / ' + cap : ''), it.key)).join('')}</tbody></table></div>`;
+  $('#user').innerHTML = `<div class="card"><div class="uhead"><div><div class="big">${esc(u.first_name || '—')}</div>
+      <span class="muted">${u.username ? '@' + esc(u.username) + ' · ' : ''}آیدی: ${u.user_id} · کارت: ${esc(u.card || '-')}</span><br>
+      <span class="muted">درآمد روزانه: ${fmt(u.daily_income)} · 🏭 انبار لول ${fmt(u.warehouse_level || 1)} ${u.vip ? `· <span class="pill wait">👑 VIP (${fmt(u.vip_days)} روز)</span>` : ''}${u.in_game ? ' · 🎮 در بازی' : ''}${u.in_queue ? ' · ⏳ در صف' : ''}</span></div>
+      <div class="row">${u.banned ? `<button class="btn green" onclick="toggleBan(false)">✅ رفع بن</button>` : `<button class="btn red" onclick="toggleBan(true)">🚫 بن کردن از ربات</button>`}
+      <button class="btn ghost" onclick="openUser(${u.user_id})">🔄</button></div></div>
+    ${u.banned ? '<div class="warn" style="margin:0 0 12px">🚫 این کاربر بن است: ربات برایش کار نمی‌کند، کسی نمی‌تواند به او حمله کند یا پول انتقال دهد.</div>' : ''}
+    <table><thead><tr><th>مورد</th><th>فعلی</th><th>مقدار</th><th></th></tr></thead><tbody>
+      ${adjRow('💰 موجودی', 'coins', fmt(u.balance))}${adjRow('🏦 بانک', 'bank', fmt(u.bank))}${adjRow('⭐ لول', 'levels', fmt(u.level))}${adjRow('✨ XP', 'xp', fmt(u.xp))}</tbody></table>
+    ${u.gifts.length ? `<p class="muted">🎁 کدهای استفاده‌شده: ${u.gifts.map(g => '<code>' + esc(g.code) + '</code>').join(' ')}</p>` : ''}</div>
+    <div class="grid2">${tbl('🏠 ملک‌ها', CAT.properties, u.properties, 'property', CAT.max_per_key)}${tbl('👷 کارگرها', CAT.workers, u.workers, 'worker', CAT.max_per_key)}</div>
+    ${tbl('💀 اینونتوری بازار سیاه', CAT.items, u.items, 'item', 0)}`;
+}
+async function toggleBan(ban) {
+  if (!CUR) return;
+  if (ban && !confirm('کاربر ' + (CUR.first_name || CUR.user_id) + ' از ربات بن شود؟\nاگر در صف یا بازی باشد، پول صف برمی‌گردد و بازی را می‌بازد.')) return;
+  try { const d = await api(ban ? 'ban' : 'unban', { user_id: CUR.user_id }); CUR = d.user; renderUser(); toast(ban ? '🚫 کاربر بن شد' : '✅ بن برداشته شد', 'ok'); }
+  catch (e) { toast(e.message, 'err'); }
+}
+async function adj(kind, key, sign) {
+  const n = num($(`#a-${kind}-${key}`).value);
+  if (!n) { toast('مقدار را وارد کن', 'err'); return; }
+  try { const d = await api('adjust', { user_id: CUR.user_id, kind, key, amount: sign * n }); CUR = d.user; renderUser(); toast('✅ ' + d.message, 'ok'); }
+  catch (e) { toast(e.message, 'err'); }
+}
+
+/* ── کد هدیه ── */
+async function createGift() {
+  try {
+    const d = await api('gifts/create', { code: $('#g-code').value, rewards: collectRewards('g'), max_uses: num($('#g-max').value), min_level: num($('#g-minlvl').value),
+      expires_hours: num($('#g-exp').value), note: $('#g-note').value });
+    toast('✅ کد ساخته شد: ' + d.code, 'ok');
+    ['#g-code', '#g-coins', '#g-bank', '#g-levels', '#g-xp', '#g-vip', '#g-max', '#g-minlvl', '#g-exp', '#g-note'].forEach(s => $(s).value = '');
+    RB.g = { properties: {}, workers: {}, items: {} }; renderChips('g'); loadGifts(); loadStats();
+  } catch (e) { toast(e.message, 'err'); }
+}
+async function loadGifts() {
+  try {
+    const d = await api('gifts/list'); const now = Date.now() / 1000;
+    $('#g-list').innerHTML = d.gifts.length ? d.gifts.map(g => {
+      const expired = g.expires_at && g.expires_at < now;
+      return `<tr><td><code>${esc(g.code)}</code><br><span class="muted">هدیه زر ${esc(g.code)}</span>${g.note ? '<br><span class="muted">📝 ' + esc(g.note) + '</span>' : ''}</td>
+        <td style="white-space:pre-line;font-size:12.5px">${esc(g.rewards_text)}</td><td>${fmt(g.used)} / ${g.max_uses ? fmt(g.max_uses) : '∞'}</td>
+        <td class="muted">${g.min_level ? 'لول ' + fmt(g.min_level) + '+' : '—'}<br>${g.expires_at ? (expired ? '⌛ منقضی' : 'تا ' + dt(g.expires_at)) : 'همیشگی'}</td>
+        <td><span class="pill ${g.active && !expired ? 'ok' : 'no'}">${g.active ? (expired ? 'منقضی' : 'فعال') : 'غیرفعال'}</span></td>
+        <td style="white-space:nowrap"><button class="btn ghost sm" onclick="giftAct('toggle','${esc(g.code)}')">${g.active ? '⏸' : '▶️'}</button> <button class="btn red sm" onclick="giftAct('delete','${esc(g.code)}')">🗑</button></td></tr>`;
+    }).join('') : '<tr><td colspan="6" class="muted">هنوز کدی ساخته نشده</td></tr>';
+  } catch (e) { toast(e.message, 'err'); }
+}
+async function giftAct(act, code) {
+  if (act === 'delete' && !confirm('کد ' + code + ' حذف شود؟')) return;
+  try { await api('gifts/' + act, { code }); loadGifts(); loadStats(); } catch (e) { toast(e.message, 'err'); }
+}
+
+/* ── فروشگاه ── */
+let PRODUCTS = [];
+async function loadProducts() {
+  try {
+    const d = await api('shop/products'); PRODUCTS = d.products;
+    $('#s-card').value = d.card_number || ''; $('#s-holder').value = d.card_holder || '';
+    $('#p-list').innerHTML = PRODUCTS.length ? PRODUCTS.map(p => `<tr><td><b>${esc(p.title)}</b>${p.description ? '<br><span class="muted">' + esc(p.description) + '</span>' : ''}</td>
+      <td style="white-space:pre-line;font-size:12.5px">${esc(p.rewards_text)}</td>
+      <td style="white-space:nowrap">${p.price_toman ? '💳 ' + fmt(p.price_toman) + ' ت' : ''}${p.price_toman && p.price_stars ? '<br>' : ''}${p.price_stars ? '⭐ ' + fmt(p.price_stars) : ''}</td>
+      <td>${fmt(p.sold)}</td><td><span class="pill ${p.active ? 'ok' : 'no'}">${p.active ? 'فعال' : 'غیرفعال'}</span></td>
+      <td style="white-space:nowrap"><button class="btn ghost sm" onclick="editProduct(${p.id})">✏️</button> <button class="btn ghost sm" onclick="prodAct('toggle',${p.id})">${p.active ? '⏸' : '▶️'}</button> <button class="btn red sm" onclick="prodAct('delete',${p.id})">🗑</button></td></tr>`).join('')
+      : '<tr><td colspan="6" class="muted">هنوز محصولی اضافه نشده</td></tr>';
+  } catch (e) { toast(e.message, 'err'); }
+}
+async function saveSettings() {
+  try { await api('shop/settings', { card_number: $('#s-card').value, card_holder: $('#s-holder').value }); toast('✅ ذخیره شد', 'ok'); } catch (e) { toast(e.message, 'err'); }
+}
+function resetProduct() {
+  ['#p-id', '#p-title', '#p-toman', '#p-stars', '#p-sort', '#p-coins', '#p-bank', '#p-levels', '#p-xp', '#p-vip', '#p-desc'].forEach(s => $(s).value = '');
+  RB.p = { properties: {}, workers: {}, items: {} }; renderChips('p');
+  $('#p-form-title').textContent = '➕ افزودن محصول'; $('#p-cancel').classList.add('hidden');
+}
+function editProduct(id) {
+  const p = PRODUCTS.find(x => x.id === id); if (!p) return;
+  const r = p.rewards || {};
+  $('#p-id').value = p.id; $('#p-title').value = p.title; $('#p-desc').value = p.description; $('#p-toman').value = p.price_toman || ''; $('#p-stars').value = p.price_stars || '';
+  $('#p-sort').value = p.sort || ''; $('#p-coins').value = r.coins || ''; $('#p-bank').value = r.bank || ''; $('#p-levels').value = r.levels || ''; $('#p-xp').value = r.xp || ''; $('#p-vip').value = r.vip_days || '';
+  RB.p = { properties: Object.assign({}, r.properties), workers: Object.assign({}, r.workers), items: Object.assign({}, r.items) }; renderChips('p');
+  $('#p-form-title').textContent = '✏️ ویرایش محصول #' + p.id; $('#p-cancel').classList.remove('hidden');
+  window.scrollTo({ top: $('#p-form-title').offsetTop - 20, behavior: 'smooth' });
+}
+async function saveProduct() {
+  try {
+    await api('shop/save', { id: num($('#p-id').value), title: $('#p-title').value, description: $('#p-desc').value, price_toman: num($('#p-toman').value),
+      price_stars: num($('#p-stars').value), sort: num($('#p-sort').value), rewards: collectRewards('p') });
+    toast('✅ محصول ذخیره شد', 'ok'); resetProduct(); loadProducts();
+  } catch (e) { toast(e.message, 'err'); }
+}
+async function prodAct(act, id) {
+  if (act === 'delete' && !confirm('محصول حذف شود؟')) return;
+  try { await api('shop/' + act, { id }); loadProducts(); } catch (e) { toast(e.message, 'err'); }
+}
+
+/* ── سفارش‌ها ── */
+const ST = { pending: ['⭐ فاکتور صادرشده', 'wait'], awaiting_receipt: ['📸 منتظر رسید', 'wait'], review: ['🕵️ بررسی', 'wait'], paid: ['✅ پرداخت‌شده', 'ok'], rejected: ['❌ رد شده', 'no'], cancelled: ['لغو شده', ''] };
+async function loadOrders() {
+  try {
+    const d = await api('shop/orders', { status: $('#o-filter').value });
+    const b = $('#ord-badge'); b.textContent = fmt(d.review_count); b.classList.toggle('hidden', !d.review_count);
+    $('#o-list').innerHTML = d.orders.length ? d.orders.map(o => {
+      const st = ST[o.status] || [o.status, ''];
+      const canAct = ['review', 'awaiting_receipt'].includes(o.status);
+      return `<tr><td>${o.id}</td><td>${esc(o.name || '—')}${o.username ? ' <span class="muted">@' + esc(o.username) + '</span>' : ''}<br><span class="muted">${o.user_id}</span></td>
+        <td>${esc(o.title)}</td><td style="white-space:nowrap">${o.method === 'stars' ? '⭐ ' + fmt(o.amount) : '💳 ' + fmt(o.amount) + ' ت'}</td>
+        <td><span class="pill ${st[1]}">${st[0]}</span></td><td class="muted">${dt(o.created_at)}</td>
+        <td style="white-space:nowrap">${o.receipt ? `<a href="/admin/receipt/${o.id}" target="_blank">🖼 رسید</a> ` : ''}${canAct ? `<button class="btn green sm" onclick="orderAct('approve',${o.id})">✅</button> <button class="btn red sm" onclick="orderAct('reject',${o.id})">❌</button>` : ''}</td></tr>`;
+    }).join('') : '<tr><td colspan="7" class="muted">سفارشی نیست</td></tr>';
+  } catch (e) { toast(e.message, 'err'); }
+}
+async function orderAct(act, id) {
+  if (!confirm(act === 'approve' ? 'سفارش #' + id + ' تأیید و تحویل شود؟' : 'سفارش #' + id + ' رد شود؟')) return;
+  try { await api('shop/' + act, { id }); toast('✅ انجام شد', 'ok'); loadOrders(); } catch (e) { toast(e.message, 'err'); }
+}
+
+/* ── ادمین‌ها ── */
+const ROLE = { owner: ['👑 مالک', 'wait'], env: ['⚙️ تنظیمات سرور', ''], panel: ['🛡 ادمین', 'ok'] };
+async function loadAdmins() {
+  try {
+    const d = await api('admins/list');
+    $('#ad-list').innerHTML = d.admins.length ? d.admins.map(a => {
+      const r = ROLE[a.role] || [a.role, ''];
+      return `<tr><td><b>${esc(a.name || '—')}</b>${a.username ? ' <span class="muted">@' + esc(a.username) + '</span>' : ''}</td>
+        <td><code>${a.user_id}</code></td><td><span class="pill ${r[1]}">${r[0]}</span></td>
+        <td class="muted">${esc(a.note || '—')}</td><td class="muted">${a.added_at ? dt(a.added_at) : '—'}</td>
+        <td>${a.removable ? `<button class="btn red sm" onclick="removeAdmin(${a.user_id})">🗑 حذف</button>` : ''}</td></tr>`;
+    }).join('') : '<tr><td colspan="6" class="muted">ادمینی ثبت نشده</td></tr>';
+  } catch (e) { toast(e.message, 'err'); }
+}
+async function addAdmin() {
+  const id = num($('#ad-id').value);
+  if (!id) { toast('آیدی عددی را وارد کن', 'err'); return; }
+  let name = '';
+  try { const u = await api('user', { user_id: id }); name = u.user.first_name || ''; }
+  catch (e) { toast(e.message, 'err'); return; }
+  if (!confirm('«' + (name || id) + '» با آیدی ' + id + ' ادمین ربات شود؟')) return;
+  try {
+    await api('admins/add', { user_id: id, note: $('#ad-note').value });
+    toast('🛡 ادمین اضافه شد', 'ok'); $('#ad-id').value = ''; $('#ad-note').value = ''; loadAdmins();
+  } catch (e) { toast(e.message, 'err'); }
+}
+async function removeAdmin(id) {
+  if (!confirm('دسترسی ادمین ' + id + ' برداشته شود؟')) return;
+  try { await api('admins/remove', { user_id: id }); toast('✅ ادمین حذف شد', 'ok'); loadAdmins(); }
+  catch (e) { toast(e.message, 'err'); }
+}
+
+/* ── VIP ── */
+async function loadVips() {
+  try {
+    const d = await api('vip/list');
+    $('#v-list').innerHTML = d.vips.length ? d.vips.map(v => `<tr>
+      <td><b>${esc(v.name || '—')}</b>${v.username ? ' <span class="muted">@' + esc(v.username) + '</span>' : ''}</td>
+      <td><code>${v.user_id}</code></td>
+      <td><b>${v.active ? fmt(v.days_left) + ' روز' : '—'}</b></td>
+      <td class="muted">${dt(v.expires_at)}</td>
+      <td><span class="pill ${v.active ? 'ok' : 'no'}">${v.active ? '👑 فعال' : 'منقضی'}</span></td>
+      <td class="muted">${esc(v.note || '—')}</td>
+      <td style="white-space:nowrap"><button class="btn ghost sm" onclick="$('#v-id').value=${v.user_id};$('#v-days').value=30">➕ تمدید</button> <button class="btn red sm" onclick="removeVip(${v.user_id})">🗑</button></td>
+    </tr>`).join('') : '<tr><td colspan="7" class="muted">کاربر VIP ثبت نشده</td></tr>';
+  } catch (e) { if (e.message !== 'auth') toast(e.message, 'err'); }
+}
+async function saveVip() {
+  const id = num($('#v-id').value), days = num($('#v-days').value);
+  if (!id || !days) { toast('آیدی عددی و تعداد روز را وارد کن', 'err'); return; }
+  try {
+    const d = await api('vip/set', { user_id: id, days, note: $('#v-note').value });
+    toast('👑 اشتراک VIP فعال شد (' + fmt(d.days_left) + ' روز باقی‌مانده)', 'ok');
+    $('#v-id').value = ''; $('#v-note').value = ''; loadVips(); loadStats();
+  } catch (e) { toast(e.message, 'err'); }
+}
+async function removeVip(id) {
+  if (!confirm('اشتراک VIP کاربر ' + id + ' حذف شود؟')) return;
+  try { await api('vip/remove', { user_id: id }); toast('✅ VIP حذف شد', 'ok'); loadVips(); loadStats(); } catch (e) { toast(e.message, 'err'); }
+}
+
+/* ── کنترل بازی‌ها، بخش‌ها و متن‌ها ── */
+const TEXT_KEYS = ['section_off', 'bot_off_msg', 'miniapp_hero_title', 'miniapp_hero_sub', 'casino_text', 'shop_text', 'help_extra',
+  'btn_bank', 'btn_prop', 'btn_worker', 'btn_casino', 'btn_mission', 'btn_transfer', 'btn_kabareh', 'btn_lb', 'btn_bm', 'btn_shop', 'btn_help'];
+async function loadControls() {
+  try {
+    const d = await api('controls/get');
+    $('#ctrl-games').innerHTML = d.games.map(g => `<label class="titem ${g.disabled ? 'off' : ''}"><span>${g.emoji} ${esc(g.name)}</span>
+      <input type="checkbox" data-cg="${g.key}" ${g.disabled ? '' : 'checked'} onchange="this.parentElement.classList.toggle('off',!this.checked)"></label>`).join('');
+    $('#ctrl-sections').innerHTML = d.sections.map(s => `<label class="titem ${s.disabled ? 'off' : ''}"><span>${esc(s.name)}</span>
+      <input type="checkbox" data-cs="${s.key}" ${s.disabled ? '' : 'checked'} onchange="this.parentElement.classList.toggle('off',!this.checked)"></label>`).join('');
+    TEXT_KEYS.forEach(k => { const el = $('#tx-' + k); if (el) el.value = (d.texts && d.texts[k]) || ''; });
+  } catch (e) { if (e.message !== 'auth') toast(e.message, 'err'); }
+}
+async function saveControls() {
+  const disabled_games = [...document.querySelectorAll('[data-cg]')].filter(i => !i.checked).map(i => i.dataset.cg);
+  const disabled_sections = [...document.querySelectorAll('[data-cs]')].filter(i => !i.checked).map(i => i.dataset.cs);
+  const texts = {};
+  TEXT_KEYS.forEach(k => { const el = $('#tx-' + k); if (el && el.value.trim()) texts[k] = el.value.trim(); });
+  try {
+    await api('controls/save', { disabled_games, disabled_sections, texts });
+    toast('✅ تنظیمات و متن‌ها ذخیره شد', 'ok');
+  } catch (e) { toast(e.message, 'err'); }
+}
+
+/* ── دیزاین و رنگ دکمه‌ها ── */
+const DESIGN_FIELDS = [
+  ['btn_primary', 'رنگ دکمه اصلی / تب فعال'],
+  ['btn_gold', 'رنگ دکمه طلایی / شروع بازی'],
+  ['btn_green', 'رنگ دکمه سبز / برداشت و تأیید'],
+  ['btn_blue', 'رنگ آبی / جزئیات'],
+  ['btn_gold_text', 'رنگ متن دکمه طلایی'],
+  ['bg_color', 'رنگ پس‌زمینه'],
+];
+const PRESETS = {
+  classic: { btn_primary: '#e11d48', btn_gold: '#f5c451', btn_green: '#10b981', btn_blue: '#38bdf8', btn_gold_text: '#1b1200', bg_color: '#07070c' },
+  purple:  { btn_primary: '#9333ea', btn_gold: '#f472b6', btn_green: '#22c55e', btn_blue: '#60a5fa', btn_gold_text: '#1f0524', bg_color: '#0b0614' },
+  emerald: { btn_primary: '#059669', btn_gold: '#fbbf24', btn_green: '#34d399', btn_blue: '#2dd4bf', btn_gold_text: '#052014', bg_color: '#040d0a' },
+  ocean:   { btn_primary: '#2563eb', btn_gold: '#38bdf8', btn_green: '#10b981', btn_blue: '#818cf8', btn_gold_text: '#031526', bg_color: '#050a14' },
+  sunset:  { btn_primary: '#ea580c', btn_gold: '#facc15', btn_green: '#22c55e', btn_blue: '#fb7185', btn_gold_text: '#240f02', bg_color: '#0f0805' },
+};
+let CUR_DESIGN = Object.assign({}, PRESETS.classic);
+const MENU_COLORS = [['', 'بدون رنگ'], ['🔴', '🔴 قرمز'], ['🟠', '🟠 نارنجی'], ['🟡', '🟡 زرد'], ['🟢', '🟢 سبز'], ['🔵', '🔵 آبی'], ['🟣', '🟣 بنفش'], ['🟤', '🟤 قهوه‌ای'], ['⚫', '⚫ مشکی'], ['⚪', '⚪ سفید']];
+let CUR_MENU_COLORS = {};
+let MENU_BTNS = [];
+function renderMenuColorsGrid() {
+  $('#menu-colors-grid').innerHTML = MENU_BTNS.map(b => `<div class="cbox">
+    <span style="font-size:22px;flex:none" id="mc-prev-${b.key}">${CUR_MENU_COLORS[b.key] || '⬜'}</span>
+    <div style="flex:1;min-width:0"><div style="font-size:12.5px;font-weight:700">${esc(b.label)}</div>
+    <select id="mc-${b.key}" onchange="onMenuColor('${b.key}',this.value)" style="width:100%;margin-top:4px">
+      ${MENU_COLORS.map(([v, l]) => `<option value="${v}" ${(CUR_MENU_COLORS[b.key] || '') === v ? 'selected' : ''}>${l}</option>`).join('')}
+    </select></div></div>`).join('');
+}
+function onMenuColor(k, v) { CUR_MENU_COLORS[k] = v; const p = $('#mc-prev-' + k); if (p) p.textContent = v || '⬜'; }
+function renderDesignGrid() {
+  $('#design-grid').innerHTML = DESIGN_FIELDS.map(([k, lbl]) => `<div class="cbox">
+    <input type="color" id="dc-${k}" value="${CUR_DESIGN[k]}" oninput="onPickColor('${k}',this.value)">
+    <div style="flex:1"><div style="font-size:12.5px;font-weight:700">${lbl}</div>
+    <input type="text" id="dt-${k}" value="${CUR_DESIGN[k]}" oninput="onHexColor('${k}',this.value)"></div></div>`).join('');
+  applyAdminDesign(CUR_DESIGN);
+  const pb = $('#design-preview'); if (pb) pb.style.background = CUR_DESIGN.bg_color;
+}
+function onPickColor(k, v) { CUR_DESIGN[k] = v; const t = $('#dt-' + k); if (t) t.value = v; applyAdminDesign(CUR_DESIGN); $('#design-preview').style.background = CUR_DESIGN.bg_color; }
+function onHexColor(k, v) { if (/^#[0-9a-fA-F]{6}$/.test(v.trim())) { CUR_DESIGN[k] = v.trim(); const c = $('#dc-' + k); if (c) c.value = v.trim(); applyAdminDesign(CUR_DESIGN); $('#design-preview').style.background = CUR_DESIGN.bg_color; } }
+function applyPreset(name) { if (!PRESETS[name]) return; CUR_DESIGN = Object.assign({}, PRESETS[name]); renderDesignGrid(); }
+async function loadDesign() {
+  try {
+    const d = await api('design/get');
+    CUR_DESIGN = Object.assign({}, PRESETS.classic, d.design || {});
+    renderDesignGrid();
+    CUR_MENU_COLORS = Object.assign({}, d.menu_colors || {});
+    MENU_BTNS = d.menu_buttons || [];
+    renderMenuColorsGrid();
+  } catch (e) { if (e.message !== 'auth') toast(e.message, 'err'); }
+}
+async function saveDesign(reset) {
+  try {
+    const d = await api('design/save', reset ? { reset: true } : { design: CUR_DESIGN, menu_colors: CUR_MENU_COLORS });
+    CUR_DESIGN = Object.assign({}, d.design);
+    CUR_MENU_COLORS = Object.assign({}, d.menu_colors || {});
+    renderDesignGrid();
+    renderMenuColorsGrid();
+    toast(reset ? '↩️ دیزاین و رنگ دکمه‌ها به پیش‌فرض برگشت' : '🎨 دیزاین و رنگ دکمه‌های منوی اصلی ذخیره و اعمال شد', 'ok');
+  } catch (e) { toast(e.message, 'err'); }
+}
+
+/* ── آیتم‌ها و قیمت‌های بازی ── */
+let GAME_ITEMS = { property: [], worker: [], item: [] }, GAME_CAT = 'property';
+const GC_LABEL = { property: '🏠 ملک', worker: '👷 کارگر', item: '💀 آیتم بازار سیاه' };
+const TYPE_LABEL = { launcher: '🚀 وسیله شلیک', projectile: '💥 مهمات', defense: '🛡️ دفاعی' };
+function giExtra(it) {
+  if (it.type === 'projectile') return '💥 تخریب ' + fmt(Math.round((it.damage || 0) * 100)) + '٪';
+  if (it.type === 'defense') return '🛡️ دفاع ' + fmt(Math.round((it.defense_chance || 0) * 100)) + '٪';
+  if (it.type === 'launcher') return '🚀 شلیک: ' + ((it.launches || []).length) + ' نوع مهمات';
+  return '📈 درآمد ' + fmt(it.income || 0) + ' /روز';
+}
+async function loadGameItems() {
+  try {
+    const [d, s] = await Promise.all([api('gameitems/list'), api('gamesettings/get')]);
+    GAME_ITEMS = d.items || { property: [], worker: [], item: [] };
+    $('#gs-minbet').value = s.settings.min_bet; $('#gs-maxbet').value = s.settings.max_bet;
+    $('#gs-bankrate').value = s.settings.bank_rate; $('#gs-whbase').value = s.settings.warehouse_base;
+    renderGameItemsList();
+    syncGameItemForm();
+  } catch (e) { if (e.message !== 'auth') toast(e.message, 'err'); }
+}
+function renderGameItemsList() {
+  const list = GAME_ITEMS[GAME_CAT] || [];
+  $('#gi-list').innerHTML = list.length ? list.map(it => `<tr>
+    <td><b>${esc(it.emoji || '')} ${esc(it.name)}</b><br><span class="muted">${esc(it._key)}${it.type ? ' · ' + (TYPE_LABEL[it.type] || it.type) : ''}</span></td>
+    <td style="white-space:nowrap">💰 ${fmt(it.price || 0)}</td>
+    <td class="muted">${giExtra(it)}</td>
+    <td><span class="pill ${it._active ? 'ok' : 'no'}">${it._active ? 'فعال' : 'غیرفعال'}</span></td>
+    <td style="white-space:nowrap"><button class="btn ghost sm" onclick="editGameItem('${it._key}')">✏️</button> <button class="btn ${it._active ? 'red' : 'green'} sm" onclick="toggleGameItem('${it._key}')">${it._active ? '⏸' : '▶️'}</button></td>
+  </tr>`).join('') : '<tr><td colspan="5" class="muted">آیتمی در این دسته ثبت نشده</td></tr>';
+}
+document.querySelectorAll('[data-gc]').forEach(b => b.onclick = () => {
+  document.querySelectorAll('[data-gc]').forEach(x => x.classList.toggle('on', x === b));
+  GAME_CAT = b.dataset.gc;
+  resetGameItemForm();
+  renderGameItemsList();
+  syncGameItemForm();
+});
+function syncGameItemForm() {
+  const isItem = GAME_CAT === 'item';
+  const t = $('#gi-type').value;
+  $('#gi-income-wrap').style.display = isItem ? 'none' : '';
+  $('#gi-type-wrap').style.display = isItem ? '' : 'none';
+  $('#gi-damage-wrap').style.display = isItem && t === 'projectile' ? '' : 'none';
+  $('#gi-defchance-wrap').style.display = isItem && t === 'defense' ? '' : 'none';
+  $('#gi-launches-wrap').style.display = isItem && t === 'launcher' ? '' : 'none';
+  $('#gi-deftype-wrap').style.display = isItem && t === 'projectile' ? '' : 'none';
+  $('#gi-defagainst-wrap').style.display = isItem && t === 'defense' ? '' : 'none';
+  $('#gi-command-wrap').style.display = isItem && t === 'projectile' ? '' : 'none';
+  $('#gi-cmd-note').style.display = isItem && t === 'projectile' ? '' : 'none';
+  $('#gi-key-in').disabled = !!$('#gi-key').value;
+}
+function resetGameItemForm() {
+  ['#gi-key', '#gi-key-in', '#gi-name', '#gi-emoji', '#gi-price', '#gi-income', '#gi-damage', '#gi-defchance', '#gi-launches', '#gi-deftype', '#gi-defagainst', '#gi-command'].forEach(s => $(s).value = '');
+  $('#gi-type').value = 'launcher';
+  $('#gi-form-title').textContent = '➕ افزودن ' + GC_LABEL[GAME_CAT] + ' جدید';
+  $('#gi-cancel').classList.add('hidden');
+  syncGameItemForm();
+}
+function editGameItem(key) {
+  const it = (GAME_ITEMS[GAME_CAT] || []).find(x => x._key === key);
+  if (!it) return;
+  $('#gi-key').value = key;
+  $('#gi-key-in').value = key;
+  $('#gi-name').value = it.name || '';
+  $('#gi-emoji').value = it.emoji || '';
+  $('#gi-price').value = it.price || '';
+  $('#gi-income').value = it.income || '';
+  $('#gi-type').value = it.type || 'launcher';
+  $('#gi-damage').value = it.damage != null ? it.damage : '';
+  $('#gi-defchance').value = it.defense_chance != null ? it.defense_chance : '';
+  $('#gi-launches').value = (it.launches || []).join(', ');
+  $('#gi-deftype').value = it.defense_type || '';
+  $('#gi-defagainst').value = it.defends_against || '';
+  $('#gi-command').value = it.command || '';
+  $('#gi-form-title').textContent = '✏️ ویرایش ' + GC_LABEL[GAME_CAT] + ' «' + (it.name || key) + '»';
+  $('#gi-cancel').classList.remove('hidden');
+  syncGameItemForm();
+  window.scrollTo({ top: $('#gi-form-title').offsetTop - 20, behavior: 'smooth' });
+}
+async function saveGameItem() {
+  const key = ($('#gi-key').value || $('#gi-key-in').value || '').trim();
+  if (!key) { toast('کلید آیتم را وارد کن', 'err'); return; }
+  const data = { name: $('#gi-name').value, emoji: $('#gi-emoji').value, price: num($('#gi-price').value) };
+  if (GAME_CAT === 'item') {
+    const t = $('#gi-type').value;
+    data.type = t;
+    if (t === 'projectile') {
+      data.damage = parseFloat($('#gi-damage').value);
+      data.defense_type = $('#gi-deftype').value;
+      data.command = $('#gi-command').value;
+    } else if (t === 'defense') {
+      data.defense_chance = parseFloat($('#gi-defchance').value);
+      data.defends_against = $('#gi-defagainst').value;
+    } else if (t === 'launcher') {
+      data.launches = $('#gi-launches').value;
+    }
+  } else {
+    data.income = num($('#gi-income').value);
+  }
+  try {
+    await api('gameitems/save', { category: GAME_CAT, key, data });
+    toast('✅ آیتم ذخیره شد', 'ok');
+    resetGameItemForm();
+    loadGameItems();
+  } catch (e) { toast(e.message, 'err'); }
+}
+async function toggleGameItem(key) {
+  try { await api('gameitems/toggle', { category: GAME_CAT, key }); loadGameItems(); }
+  catch (e) { toast(e.message, 'err'); }
+}
+async function saveGameSettings() {
+  try {
+    await api('gamesettings/save', { settings: {
+      min_bet: num($('#gs-minbet').value), max_bet: num($('#gs-maxbet').value),
+      bank_rate: parseFloat($('#gs-bankrate').value), warehouse_base: num($('#gs-whbase').value) } });
+    toast('✅ تنظیمات قیمت‌ها ذخیره شد', 'ok');
+  } catch (e) { toast(e.message, 'err'); }
+}
+loadStats();
+</script>
+</body>
+</html>
